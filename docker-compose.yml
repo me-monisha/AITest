@@ -1,0 +1,26 @@
+version: "3.8"
+
+# Optional: brings up a Postgres instance matching the assignment's tech spec.
+# Run: docker compose up -d
+# Then set, in backend/.env:
+#   DATABASE_URL=postgresql+psycopg2://aivoa:aivoa@localhost:5432/aivoa_deviations
+#
+# If you'd rather not run Docker at all, the backend works out of the box with
+# SQLite (DATABASE_URL=sqlite:///./deviations.db, the .env.example default) -
+# no setup required.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aivoa-deviations-db
+    environment:
+      POSTGRES_USER: aivoa
+      POSTGRES_PASSWORD: aivoa
+      POSTGRES_DB: aivoa_deviations
+    ports:
+      - "5432:5432"
+    volumes:
+      - aivoa_pg_data:/var/lib/postgresql/data
+
+volumes:
+  aivoa_pg_data:

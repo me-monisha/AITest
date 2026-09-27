@@ -1,0 +1,33 @@
+# Run the full system (app + Postgres) on any server with Docker:
+#   GROQ_API_KEY=gsk_... docker compose -f docker-compose.prod.yml up -d --build
+# Then open http://<server>:8000
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY:?Set GROQ_API_KEY}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.3-70b-versatile}
+      DATABASE_URL: postgresql+psycopg2://aivoa:aivoa@db:5432/aivoa_deviations
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: aivoa
+      POSTGRES_PASSWORD: aivoa
+      POSTGRES_DB: aivoa_deviations
+    volumes:
+      - aivoa_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aivoa -d aivoa_deviations"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  aivoa_pg_data:
