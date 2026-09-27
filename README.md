@@ -237,3 +237,15 @@ severity suggestion → save → confirmation; and separately, a chat-based fiel
 that changed only the targeted field.
 
 For your own demo video, swap in a real `GROQ_API_KEY` and the flow is identical.
+
+---
+
+## 8. Demo video
+
+`demo/record-demo.mjs` records a captioned walkthrough of every AI tool and
+feature against any running instance — see `demo/README.md`:
+
+```bash
+cd demo && npm install && npx playwright install chromium
+node record-demo.mjs https://<your-app>.onrender.com
+```

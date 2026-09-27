@@ -11,3 +11,7 @@ frontend/dist/
 
 # OS
 .DS_Store
+
+# Demo recorder
+demo/node_modules/
+demo/output/
